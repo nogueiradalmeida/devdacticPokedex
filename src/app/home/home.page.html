@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      Devdactic Pokemon
+      BCI Best Covid Info Brasil
     </ion-title>
   </ion-toolbar>
 </ion-header>
  
 <ion-content>
-  <ion-searchbar placeholder="Search Pokemon" (ionChange)="onSearchChange($event)"></ion-searchbar>
+  <ion-searchbar placeholder="Procurar por cidade" (ionChange)="onSearchChange($event)"></ion-searchbar>
   <ion-list *ngIf="pokemon.length == 0">
     <ion-item *ngFor="let i of [1,2,3,4,5]">
       <ion-avatar slot="start">
@@ -25,19 +25,27 @@
   </ion-list>
  
   <ion-list>
-    <ion-item *ngFor="let poke of pokemon;" [routerLink]="poke.pokeIndex">
-      <ion-avatar slot="start">
-        <img [src]="poke.image" style="background: #F2F2F2;">
-      </ion-avatar>
-      <ion-label class="ion-text-capitalize">
-        <h2>{{ poke.name }}</h2>
-        <p>#{{ poke.pokeIndex }}</p>
-      </ion-label>
+    <ion-item *ngFor="let poke of pokemon;" [routerLink]="poke.pokeIndex" >
+
+        <ion-row justify-content-center align-items-end style="height:100%" *ngIf="poke.city">
+          <ion-col col-4>
+            <ion-icon name="caret-forward-outline"></ion-icon>
+          </ion-col>   
+          <ion-col col-4>
+            <ion-label class="ion-text-capitalize">
+             {{ poke.city }} <span style="color: brown;">{{ (poke.deaths/poke.estimated_population_2019*100).toPrecision(2) }} %</span>
+            </ion-label>
+          </ion-col>
+          <ion-col col-4>
+            <br>
+          </ion-col>             
+        </ion-row>  
+
     </ion-item>
   </ion-list>
  
   <ion-infinite-scroll (ionInfinite)="loadPokemon(true, $event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more Pokemon...">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando mais cidades...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
  

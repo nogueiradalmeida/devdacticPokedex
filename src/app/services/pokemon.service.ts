@@ -7,21 +7,31 @@ import { map } from 'rxjs/operators';
 })
 export class PokemonService {
   
-  baseUrl = 'https://pokeapi.co/api/v2';
+  baseUrl = 'https://brasil.io/api/dataset/covid19/caso';
   imageUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
  
   constructor(private http: HttpClient) {}
  
   getPokemon(offset = 0) {
+    /*
+    this.http
+    .get(`${this.baseUrl}/data/`) .subscribe(
+      result => {
+        console.log ( result['results'] );
+      });
+    */
+   offset++;
+    
     return this.http
-      .get(`${this.baseUrl}/pokemon?offset=${offset}&limit=25`)
+      .get(`${this.baseUrl}/data?page=${offset}`)
+      //.get(`${this.baseUrl}/data?page=${offset}&state=RJ`)
       .pipe(
         map(result => {
           return result['results'];
         }),
         map(pokemon => {
           return pokemon.map((poke, index) => {
-            poke.image = this.getPokeImage(offset + index + 1);
+            //poke.image = this.getPokeImage(offset + index + 1);
             poke.pokeIndex = offset + index + 1;
             return poke;
           });
@@ -30,11 +40,18 @@ export class PokemonService {
   }
  
   findPokemon(search) {
-    return this.http.get(`${this.baseUrl}/pokemon/${search}`).pipe(
+    return this.http.get(`${this.baseUrl}/data`)
+    .pipe(
+      map(result => {
+        return result['results'];
+      }),
       map(pokemon => {
-        pokemon['image'] = this.getPokeImage(pokemon['id']);
-        pokemon['pokeIndex'] = pokemon['id'];
-        return pokemon;
+        return pokemon.map((poke, index) => {
+          //poke.image = this.getPokeImage(offset + index + 1);
+          //poke.pokeIndex = offset + index + 1;
+          if ( search = poke.city)
+          return poke;
+        });
       })
     );
   }
